@@ -18,9 +18,8 @@ object slickCodeGenerator {
     val modelFuture = db.run(MySQLDriver.createModel(Some(MySQLDriver.defaultTables)))
     val codegenFuture = modelFuture.map(model => new SlickSourceCodeGenerator(model))
     import scala.concurrent.duration._
-    Await.ready(codegenFuture.map(
-      _.writeToFile("slick.driver.MySQLDriver", args(0),
-      "demo")), 30 seconds)
+    Await.ready(codegenFuture.map(_.writeToFile("slick.driver.MySQLDriver", args(0),
+      "auto_generated")), 30 seconds)
   }
 }
 
@@ -29,23 +28,30 @@ class SlickSourceCodeGenerator(model: Model) extends SourceCodeGenerator(model) 
   gen =>
 
   override def entityName = dbTableName => dbTableName match {
-        case "computers" => "Computer"
-        case "comapnies" => "Company"
-        case "persons" => "Person"
-        case _ => super.entityName(dbTableName)
-      }
+    case "Computers" => "Computer"
+    case "Companies" => "Company"
+    case "Persons" => "Person"
+    case _ => super.entityName(dbTableName)
+  }
 
 
   override def tableName =
     dbTableName => dbTableName
+
   // add some custom import
   override def code = super.code
 
   // override table generator
   override def Table = new Table(_) {
+    table =>
+
     // disable entity class generation and mapping
     override def EntityType = new EntityType {
       override def classEnabled = true
+    }
+
+    override def TableValue = new TableValue {
+      override def rawName = super.rawName.toCamelCase
     }
 
     // override contained column generator

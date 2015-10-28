@@ -42,15 +42,16 @@ object stagedBuild extends Build {
       "mysql" % "mysql-connector-java" % "5.1.24")
   )
 
+
   // code generation task that calls the customized code generator
   lazy val slick = TaskKey[Seq[File]]("gen-tables")
-  lazy val slickCodeGenTask = (sourceManaged, dependencyClasspath
+  lazy val slickCodeGenTask = (scalaSource in Compile, dependencyClasspath
     in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
-    val outputDir =  (dir / "slick").getPath //
+    val outputDir =  dir.getPath //
     // place generated files in sbt's managed sources folder
     toError(r.run("slickCodeGenerator",
       cp.files, Array(outputDir), s.log))
-    val fname = outputDir + "/demo/Tables.scala"
+    val fname = outputDir + "/auto_generated/Tables.scala"
     Seq(file(new File(fname).getAbsolutePath))
   }
 }
