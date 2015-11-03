@@ -39,7 +39,9 @@ object stagedBuild extends Build {
       "com.typesafe.slick" %% "slick" % "3.1.0",
       "org.slf4j" % "slf4j-nop" % "1.7.10",
       "com.h2database" % "h2" % "1.4.187",
-      "mysql" % "mysql-connector-java" % "5.1.24")
+      "mysql" % "mysql-connector-java" % "5.1.24",
+      "org.scalaz" %% "scalaz-core" % "7.1.1"
+    )
   )
 
 

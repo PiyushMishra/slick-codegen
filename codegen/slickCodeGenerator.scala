@@ -9,6 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 /**
  * Created by piyushm on 27/10/15.
  */
+
 object slickCodeGenerator {
   def main(args: Array[String]) {
     val ds = new MysqlDataSource
