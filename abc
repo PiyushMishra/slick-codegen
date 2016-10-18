@@ -1,0 +1,32 @@
+In last recipe we learned how to use future with Actor, In this recipe we would know how to use Future inside the actor.
+
+Getting Ready
+All the prerequsites are same as before, just import Helo-Akka project.
+
+How to do it..
+1. Create a file say FutureInsideActor.scala in package com.packt.chapter4
+2. Add below imorts to the top of the file.
+import akka.actor.{Props, ActorSystem, Actor}
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
+3.Create an actor which uses a future inside.
+
+class FutureActor extends Actor {
+  import context.dispatcher
+  def receive = {
+    case (a:Int, b:Int) => val f = Future(a+b)
+      println(Await.result(f, 10 seconds))
+  }
+}
+4. Create a test application as below.
+  object FutureInsideActor extends App {
+
+  val actorSystem = ActorSystem("Hello-Akka")
+
+  val fActor = actorSystem.actorOf(Props[FutureActor])
+
+  fActor !(10, 20)
+
+}
+
+How it works.
